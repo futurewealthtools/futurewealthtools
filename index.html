@@ -1,171 +1,140 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO -->
-  <title>Future Wealth Calculator – Investing vs Saving Growth Tool</title>
-  <meta name="description" content="Free future wealth calculator. Compare investing vs saving, see investment growth over time, and calculate opportunity cost with inflation and fees. Your data stays in your browser." />
+  <title>Future Wealth Tools – Investment & Savings Calculator</title>
+
+  <meta name="description" content="Simple calculators to help you plan savings and investments. Compare saving vs investing, project future wealth, and explore financial scenarios." />
   <meta name="robots" content="index, follow" />
+  <meta name="author" content="Future Wealth Tools" />
 
-  <!-- Open Graph (better link previews) -->
-  <meta property="og:title" content="Future Wealth Calculator" />
-  <meta property="og:description" content="Compare investing vs saving. See future wealth, inflation-adjusted value, and opportunity cost." />
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://futurewealthtools.github.io/futurewealthtools/" />
+
+  <!-- Open Graph (social sharing preview) -->
+  <meta property="og:title" content="Future Wealth Tools – Investment Calculator" />
+  <meta property="og:description" content="Compare saving vs investing and project your future wealth with simple calculators." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futurewealthtools.github.io/futurewealthtools/" />
+  <meta property="og:site_name" content="Future Wealth Tools" />
+
+  <!-- Twitter card preview -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Future Wealth Tools – Investment Calculator" />
+  <meta name="twitter:description" content="Compare saving vs investing and project your future wealth." />
+
+  <!-- Optional favicon (add later if you create one) -->
+  <!-- <link rel="icon" href="favicon.ico" /> -->
 
   <style>
     :root{
-      --border:#ddd; --muted:#666; --text:#111; --bg:#fff; --card:#fff; --soft:#f6f6f6;
-      --green: rgba(14, 143, 0, .28);  /* investment fill */
-      --blue: rgba(0, 102, 204, .22);  /* savings fill */
-      --black:#111;                    /* total line */
-      --orange:#E67E00;                /* savings-only line */
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --shadow2: 0 1px 3px rgba(2,6,23,.08);
+      --radius:16px;
     }
-    body { font-family: system-ui, Arial, sans-serif; margin: 0; padding: 20px; max-width: 1100px; color: var(--text); background: var(--bg); }
-    header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-    h1 { margin: 0; font-size: 26px; }
-    .subtitle { margin: 6px 0 0; color:#444; }
-    .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #222; background: #222; color:#fff; cursor:pointer; font-size: 15px; }
-    .btn.secondary { background:#fff; color:#222; border-color:#222; }
-    .btn.danger { background:#fff; color:#b00020; border-color:#b00020; }
-    .tabs { display:flex; gap:8px; margin: 16px 0; flex-wrap:wrap; }
-    .tab { padding:10px 12px; border-radius:999px; border:1px solid var(--border); background:#fff; cursor:pointer; font-size:14px; }
-    .tab.active { border-color:#222; background:#222; color:#fff; }
-    .card { border: 1px solid var(--border); border-radius: 14px; padding: 16px; background: var(--card); margin: 12px 0; }
-    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    label { font-size: 13px; color:#333; display:block; margin-bottom:6px; }
-    input { width:100%; padding:10px; border:1px solid #ccc; border-radius:10px; font-size:16px; box-sizing:border-box; }
-    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .muted { color: var(--muted); font-size: 13px; }
-    .error { color:#b00020; margin-top:8px; font-size:14px; }
-    .kpis { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
-    .kpi { border: 1px solid #eee; border-radius: 12px; padding: 12px; background:#fff; }
-    .kpi .label { font-size: 12px; color:#666; margin-bottom:4px; }
-    .kpi .value { font-size: 20px; font-weight: 800; }
-    .sectionTitle { font-weight: 800; margin: 0 0 10px; }
-    .pill { display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid #eee; border-radius:12px; background:var(--soft); }
-    canvas { width:100%; height: 300px; border:1px solid #eee; border-radius:12px; margin-top:12px; }
-    .hide { display:none; }
-    .legend { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:10px; }
-    .swatch { width:14px; height:14px; border-radius: 4px; display:inline-block; border:1px solid rgba(0,0,0,.2); }
-    table { width:100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align:right; white-space:nowrap; }
-    th:first-child, td:first-child { text-align:left; }
-    details summary { cursor:pointer; font-weight: 750; }
-    details > div { margin-top: 10px; }
-    .list { display:grid; gap:8px; }
-    .item { display:grid; grid-template-columns: 1.6fr 1fr auto; gap:10px; align-items:center; }
-    .item input[type="text"] { font-size:15px; }
-    footer { margin-top:40px; padding-top:20px; border-top:1px solid #eee; text-align:center; font-size:13px; color:#666; }
-    @media (max-width: 780px){
-      .grid, .kpis { grid-template-columns: 1fr; }
-      .item { grid-template-columns: 1fr; }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:var(--bg);      line-height:1.35;
     }
-  :root{
-    --bg:#f6f7fb;
-    --card:#ffffff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --border:#e2e8f0;
-    --shadow: 0 10px 30px rgba(2,6,23,.08);
-    --shadow2: 0 1px 3px rgba(2,6,23,.08);
-    --radius:16px;
-  }
 
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-    color:var(--text);
-    background:var(--bg);
-    line-height:1.35;
-  }
+    /* Centers your whole page content */
+    .app{
+      max-width: 980px;
+      margin: 32px auto;
+      padding: 0 16px 40px;
+    }
 
-  /* Center the whole app */
-  .app{
-    max-width: 980px;
-    margin: 32px auto;
-    padding: 0 16px 40px;
-  }
+    /* Nice top header (optional: use if you have a header area) */
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:14px;
+    }
+    .brand h1{
+      font-size: 28px;
+      margin:0;
+      letter-spacing:-0.02em;
+    }
+    .brand p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
 
-  /* Top header */
-  .topbar{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:16px;
-    margin-bottom:14px;
-  }
-  .brand h1{
-    font-size: 28px;
-    margin:0;
-    letter-spacing:-0.02em;
-  }
-  .brand p{
-    margin:6px 0 0;
-    color:var(--muted);
-    font-size:14px;
-  }
+    /* Card container to wrap your main calculator UI */
+    .panel{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
 
-  /* Buttons */
-  button, .btn{
-    border:1px solid var(--border);
-    background:var(--card);
-    color:var(--text);
-    padding:10px 12px;
-    border-radius:12px;
-    box-shadow: var(--shadow2);
-    cursor:pointer;
-    transition: transform .06s ease, box-shadow .2s ease;
-    font-weight:600;
-  }
-  button:hover, .btn:hover{
-    box-shadow: var(--shadow);
-    transform: translateY(-1px);
-  }
-  button:active, .btn:active{
-    transform: translateY(0px);
-  }
+    /* Generic form styling */
+    input, select, textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      outline:none;
+      background:#fff;
+      color:var(--text);
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:#94a3b8;
+      box-shadow: 0 0 0 4px rgba(148,163,184,.25);
+    }
 
-  /* Make the whole calculator area look like a card */
-  .panel{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 16px;
-  }
+    /* Buttons */
+    button, .btn{
+      border:1px solid var(--border);
+      background:var(--card);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      box-shadow: var(--shadow2);
+      cursor:pointer;
+      transition: transform .06s ease, box-shadow .2s ease;
+      font-weight:600;
+    }
+    button:hover, .btn:hover{
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+    button:active, .btn:active{
+      transform: translateY(0px);
+    }
 
-  /* Inputs */
-  input, select{
-    width:100%;
-    padding:10px 12px;
-    border-radius:12px;
-    border:1px solid var(--border);
-    outline:none;
-    background:#fff;
-  }
-  input:focus, select:focus{
-    border-color:#94a3b8;
-    box-shadow: 0 0 0 4px rgba(148,163,184,.25);
-  }
+    /* Small text */
+    small, .hint{
+      color:var(--muted);
+    }
 
-  /* Small helper text */
-  small, .hint{
-    color:var(--muted);
-  }
-
-  /* Footer disclaimer */
-  .disclaimer{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:14px;
-  }
+    /* Footer disclaimer */
+    .disclaimer{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:14px;
+    }
   </style>
 </head>
 <body>
-
+<div class="app">
 <header>
   <div>
     <h1>Future Wealth Calculator</h1>
@@ -1280,5 +1249,6 @@
   Educational estimates only — not financial advice.
 </footer>
 
+</div>
 </body>
 </html>
