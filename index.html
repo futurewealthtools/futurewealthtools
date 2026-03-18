@@ -4,16 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Future Wealth Tools – Investment & Savings Calculator</title>
-  <meta name="description" content="Simple, practical calculators to help you plan savings and investments. Compare saving vs investing, project future wealth, and explore scenarios." />
-  <link rel="canonical" href="https://futurewealthtools.github.io/" />
+  <title>Future Wealth Calculator – Investment Growth & Savings Projection Tool</title>
+  <meta
+    name="description"
+    content="Free future wealth calculator. Project investment growth, compare saving vs investing, and see how your money grows over time with inflation and fees."
+  />
+  <link rel="canonical" href="https://futurewealthtools.com/" />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Future Wealth Tools" />
 
   <!-- Open Graph (for social sharing previews) -->
-  <meta property="og:title" content="Future Wealth Tools" />
-  <meta property="og:description" content="Investment & savings calculators to help you plan your future wealth." />
+  <meta property="og:title" content="Future Wealth Calculator – Investment Growth & Savings Projection Tool" />
+  <meta
+    property="og:description"
+    content="Free future wealth calculator to project investment growth, compare saving vs investing, and explore future financial scenarios."
+  />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futurewealthtools.com/" />
 
   <!-- Optional: add later if/when you have an icon file -->
   <!-- <link rel="icon" href="favicon.ico" /> -->
@@ -85,14 +92,12 @@
     line-height:1.35;
   }
 
-  /* Center the whole app */
   .app{
     max-width: 980px;
     margin: 32px auto;
     padding: 0 16px 40px;
   }
 
-  /* Top header */
   .topbar{
     display:flex;
     align-items:flex-start;
@@ -111,7 +116,6 @@
     font-size:14px;
   }
 
-  /* Buttons */
   button, .btn{
     border:1px solid var(--border);
     background:var(--card);
@@ -131,7 +135,6 @@
     transform: translateY(0px);
   }
 
-  /* Make the whole calculator area look like a card */
   .panel{
     background:var(--card);
     border:1px solid var(--border);
@@ -140,7 +143,6 @@
     padding: 16px;
   }
 
-  /* Inputs */
   input, select{
     width:100%;
     padding:10px 12px;
@@ -154,12 +156,10 @@
     box-shadow: 0 0 0 4px rgba(148,163,184,.25);
   }
 
-  /* Small helper text */
   small, .hint{
     color:var(--muted);
   }
 
-  /* Footer disclaimer */
   .disclaimer{
     color:var(--muted);
     font-size:12px;
@@ -167,7 +167,6 @@
   }
   </style>
 </head>
-</div>
 <body>
 <div class="app">
 <header>
@@ -184,6 +183,31 @@
     Shared links include Future Wealth or Future Cost only (Monthly Budget is not included).
   </div>
 </header>
+
+<section class="card" style="margin-top:16px;">
+  <h2>Future Wealth Calculator</h2>
+  <p>
+    This future wealth calculator helps you estimate how your savings and investments can grow over time.
+    Enter your current savings, monthly contributions, and expected return rates to project your total
+    future wealth and compare different financial scenarios.
+  </p>
+
+  <h2>What can you calculate?</h2>
+  <ul>
+    <li>Investment growth over time</li>
+    <li>Comparison of saving vs investing</li>
+    <li>Impact of inflation on your wealth</li>
+    <li>Opportunity cost of spending money today</li>
+    <li>Monthly budget surplus available for investing</li>
+  </ul>
+
+  <h2>Why this matters</h2>
+  <p>
+    Understanding how money grows is important for long-term financial planning. Small monthly investments
+    can compound into significant wealth over time. This tool helps you visualise that growth and make
+    better financial decisions.
+  </p>
+</section>
 
 <div class="tabs">
   <button class="tab" id="tabWealth">Future Wealth</button>
