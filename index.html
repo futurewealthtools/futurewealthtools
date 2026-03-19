@@ -66,7 +66,13 @@
     .kpi .value { font-size: 20px; font-weight: 700; }
     .sectionTitle { font-weight: 800; margin: 0 0 10px; }
     .pill { display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid #eee; border-radius:12px; background:var(--soft); }
-    canvas { width:100%; height: 300px; border:1px solid #eee; border-radius:12px; margin-top:12px; }
+    canvas {
+  width: 100%;
+  height: 260px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  margin-top: 12px;
+}
     .hide { display:none; }
     .legend { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:10px; }
     .swatch { width:14px; height:14px; border-radius: 4px; display:inline-block; border:1px solid rgba(0,0,0,.2); }
@@ -80,9 +86,10 @@
     .item input[type="text"] { font-size:15px; }
     footer { margin-top:40px; padding-top:20px; border-top:1px solid #eee; text-align:center; font-size:13px; color:#666; }
     @media (max-width: 780px){
-      .grid, .kpis { grid-template-columns: 1fr; }
-      .item { grid-template-columns: 1fr; }
-    }
+  .grid, .kpis { grid-template-columns: 1fr; }
+  .item { grid-template-columns: 1fr; }
+  canvas { height: 220px; }
+}
   *{ box-sizing:border-box; }
   body{
     margin:0;
@@ -201,7 +208,7 @@
     <li>Monthly budget surplus available for investing</li>
   </ul>
 
-  <h2>Why this matters</h2>
+  <h3>Why this matters</h3>
   <p>
     Understanding how money grows is important for long-term financial planning. Small monthly investments
     can compound into significant wealth over time. This tool helps you visualise that growth and make
@@ -244,7 +251,7 @@
       </div>
     </div>
 
-    <canvas id="wealthChart" width="1040" height="340"></canvas>
+   <canvas id="wealthChart"></canvas>
 
     <div class="legend">
       <span><span class="swatch" style="background: var(--green)"></span> Investment</span>
@@ -690,6 +697,8 @@
   function drawStackedChart({ mixedPoints, savingsOnlyPoints, showSavingsOnly }) {
     const canvas = document.getElementById("wealthChart");
     const ctx = canvas.getContext("2d");
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const padL = 68, padR = 18, padT = 18, padB = 42;
@@ -1300,6 +1309,9 @@
   debounceWealth(renderWealth);
   debounceCost(renderCost);
   applyFromUrlIfPresent();
+window.addEventListener("resize", () => {
+  debounceWealth(renderWealth);
+});
 </script>
 
 <section class="card" style="margin-top:16px;">
