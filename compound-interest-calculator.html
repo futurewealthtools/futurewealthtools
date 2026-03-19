@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Compound Interest Calculator – Investment Growth Projection Tool</title>
+  <meta
+    name="description"
+    content="Free compound interest calculator for investments. Calculate how your money can grow over time with monthly contributions, annual returns, and investment fees."
+  />
+  <link rel="canonical" href="https://futurewealthtools.com/compound-interest-calculator.html" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Future Wealth Tools" />
+
+  <meta property="og:title" content="Compound Interest Calculator – Investment Growth Projection Tool" />
+  <meta
+    property="og:description"
+    content="Calculate compound investment growth with starting balance, monthly contributions, annual return, and fees."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://futurewealthtools.com/compound-interest-calculator.html" />
+
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+:root{
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --soft:#f6f6f6;
+  --green: rgba(14,143,0,.28);
+  --black:#111;
+  --shadow: 0 10px 30px rgba(2,6,23,.08);
+  --shadow2: 0 1px 3px rgba(2,6,23,.08);
+  --radius:16px;
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.35;
+}
+.app{
+  max-width: 980px;
+  margin: 32px auto;
+  padding: 0 16px 40px;
+}
+header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+h1{
+  margin: 0;
+  font-size: 28px;
+  letter-spacing:-0.02em;
+}
+h2{
+  margin-top:0;
+}
+h3{
+  margin-bottom:8px;
+}
+.subtitle{
+  margin: 6px 0 0;
+  color:#444;
+}
+.card{
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  background: var(--card);
+  margin: 12px 0;
+  box-shadow: var(--shadow2);
+}
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+}
+label{
+  font-size: 13px;
+  color:#333;
+  display:block;
+  margin-bottom:6px;
+}
+input{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  font-size:16px;
+  background:#fff;
+}
+input:focus{
+  border-color:#94a3b8;
+  box-shadow: 0 0 0 4px rgba(148,163,184,.25);
+  outline:none;
+}
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.muted{
+  color: var(--muted);
+  font-size: 13px;
+}
+.kpis{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.kpi{
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+  background:#fff;
+}
+.kpi .label{
+  font-size: 12px;
+  color:#666;
+  margin-bottom:4px;
+}
+.kpi .value{
+  font-size: 22px;
+  font-weight: 700;
+}
+.btn{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:12px;
+  box-shadow: var(--shadow2);
+  cursor:pointer;
+  font-weight:600;
+  text-decoration:none;
+}
+.btn:hover{
+  box-shadow: var(--shadow);
+}
+canvas{
+  width:100%;
+  height:260px;
+  border:1px solid #eee;
+  border-radius:12px;
+  margin-top:12px;
+}
+.legend{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.swatch{
+  width:14px;
+  height:14px;
+  border-radius:4px;
+  display:inline-block;
+  border:1px solid rgba(0,0,0,.2);
+}
+table{
+  width:100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th, td{
+  border-bottom: 1px solid #eee;
+  padding: 8px;
+  text-align:right;
+  white-space:nowrap;
+}
+th:first-child, td:first-child{
+  text-align:left;
+}
+details summary{
+  cursor:pointer;
+  font-weight:750;
+}
+details > div{
+  margin-top:10px;
+}
+footer{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid #eee;
+  text-align:center;
+  font-size:13px;
+  color:#666;
+}
+@media (max-width: 780px){
+  .grid, .kpis { grid-template-columns: 1fr; }
+  canvas { height:220px; }
+}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <h1>Compound Interest Calculator</h1>
+      <div class="subtitle">Calculate how your investments can grow over time with compound returns.</div>
+    </div>
+    <div class="row">
+      <a class="btn" href="index.html">Back to main tools</a>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2>Investment Compound Interest Calculator</h2>
+    <p>
+      This compound interest calculator helps you estimate how your investments grow over time.
+      Enter a starting amount, monthly contribution, annual return, and fees to project your future investment value.
+    </p>
+
+    <h3>What can you calculate?</h3>
+    <ul>
+      <li>Future value of an investment portfolio</li>
+      <li>Growth from monthly contributions</li>
+      <li>Impact of fees on long-term returns</li>
+      <li>Total contributions compared to investment gains</li>
+    </ul>
+
+    <h3>Why this matters</h3>
+    <p>
+      Compound growth is one of the most powerful drivers of long-term wealth. Even modest monthly contributions
+      can grow into substantial amounts over time when investment returns are reinvested.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="grid">
+      <div>
+        <label for="startAmount">Starting investment (AUD)</label>
+        <input id="startAmount" type="text" inputmode="numeric" autocomplete="off" />
+        <div class="muted">Your current invested balance.</div>
+      </div>
+      <div>
+        <label for="monthlyContribution">Monthly contribution (AUD)</label>
+        <input id="monthlyContribution" type="text" inputmode="numeric" autocomplete="off" />
+        <div class="muted">How much you invest each month.</div>
+      </div>
+      <div>
+        <label for="years">Years</label>
+        <input id="years" type="number" min="1" step="1" />
+      </div>
+      <div>
+        <label for="annualReturn">Annual return (%)</label>
+        <input id="annualReturn" type="number" min="0" step="0.1" />
+      </div>
+      <div>
+        <label for="annualFees">Annual fees (%)</label>
+        <input id="annualFees" type="number" min="0" step="0.01" />
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="label">Future value</div>
+        <div class="value" id="futureValue">—</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Total contributions</div>
+        <div class="value" id="totalContributions">—</div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="label">Investment growth</div>
+        <div class="value" id="totalGrowth">—</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Net annual return after fees</div>
+        <div class="value" id="netReturn">—</div>
+      </div>
+    </div>
+
+    <canvas id="compoundChart"></canvas>
+
+    <div class="legend">
+      <span><span class="swatch" style="background: var(--green)"></span> Portfolio value</span>
+      <span><span class="swatch" style="background: var(--black)"></span> Growth line</span>
+    </div>
+
+    <details class="card" style="border-color:#eee; margin-top:12px;">
+      <summary>Show yearly breakdown</summary>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Total contributions</th>
+              <th>Portfolio value</th>
+              <th>Growth</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <p class="muted" style="margin-top:12px;">
+      Disclaimer: Educational estimate only. Not financial advice. Results do not include tax or personal circumstances.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Frequently Asked Questions</h2>
+
+    <details style="margin-top:12px;">
+      <summary>What is compound interest?</summary>
+      <div>
+        <p>
+          Compound interest is the process where your investment earns returns, and then those returns also begin earning returns.
+          Over time, this creates accelerating growth.
+        </p>
+      </div>
+    </details>
+
+    <details style="margin-top:12px;">
+      <summary>How does this compound interest calculator work?</summary>
+      <div>
+        <p>
+          This calculator applies a monthly growth rate based on your annual return minus annual fees.
+          It then adds your monthly contribution and projects the portfolio value over time.
+        </p>
+      </div>
+    </details>
+
+    <details style="margin-top:12px;">
+      <summary>Does this calculator include investment fees?</summary>
+      <div>
+        <p>
+          Yes. Annual fees are subtracted from the annual return to estimate a net annual return before compounding.
+        </p>
+      </div>
+    </details>
+
+    <details style="margin-top:12px;">
+      <summary>Is this for loans or investments?</summary>
+      <div>
+        <p>
+          This page is designed for investment growth, not loan repayment. It helps estimate how invested money can compound over time.
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    Your data stays in your browser. Nothing is stored on our servers.<br />
+    Educational estimates only — not financial advice.
+  </footer>
+</div>
+
+<script>
+  const STORAGE_KEY = "compound_interest_calculator_v1";
+
+  const DEFAULT_STATE = {
+    startAmount: 10000,
+    monthlyContribution: 500,
+    years: 25,
+    annualReturn: 7.0,
+    annualFees: 0.20
+  };
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return structuredClone(DEFAULT_STATE);
+      return { ...structuredClone(DEFAULT_STATE), ...JSON.parse(raw) };
+    } catch {
+      return structuredClone(DEFAULT_STATE);
+    }
+  }
+
+  let state = loadState();
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  const fmtAUD0 = new Intl.NumberFormat("en-AU", {
+    style: "currency",
+    currency: "AUD",
+    maximumFractionDigits: 0
+  });
+
+  const fmtNum0 = new Intl.NumberFormat("en-AU", {
+    maximumFractionDigits: 0
+  });
+
+  function parseMoney(str) {
+    if (typeof str !== "string") str = String(str ?? "");
+    const cleaned = str.replace(/[$,\s]/g, "");
+    const n = Number(cleaned);
+    return Number.isFinite(n) ? n : NaN;
+  }
+
+  function formatMoney(n) {
+    if (!Number.isFinite(n)) return "";
+    return fmtNum0.format(n);
+  }
+
+  function monthlyRateFromAnnual(annual) {
+    return Math.pow(1 + annual, 1/12) - 1;
+  }
+
+  function projectCompound({ startAmount, monthlyContribution, years, annualReturn, annualFees }) {
+    const netAnnual = Math.max(-0.99, (annualReturn - annualFees) / 100);
+    const monthlyRate = monthlyRateFromAnnual(netAnnual);
+    const months = years * 12;
+
+    let balance = startAmount;
+    const points = [{ year: 0, balance, contributions: startAmount, growth: 0 }];
+
+    for (let m = 1; m <= months; m++) {
+      balance = balance * (1 + monthlyRate) + monthlyContribution;
+      if (m % 12 === 0) {
+        const year = m / 12;
+        const contributions = startAmount + monthlyContribution * m;
+        const growth = balance - contributions;
+        points.push({ year, balance, contributions, growth });
+      }
+    }
+
+    const totalContributions = startAmount + monthlyContribution * months;
+    const totalGrowth = balance - totalContributions;
+
+    return {
+      netAnnualPct: annualReturn - annualFees,
+      endBalance: balance,
+      totalContributions,
+      totalGrowth,
+      points
+    };
+  }
+
+  function drawChart(points) {
+    const canvas = document.getElementById("compoundChart");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const padL = 68, padR = 18, padT = 18, padB = 42;
+    const W = canvas.width, H = canvas.height;
+    const w = W - padL - padR;
+    const h = H - padT - padB;
+
+    const xMax = Math.max(...points.map(p => p.year));
+    const yMax = Math.max(...points.map(p => p.balance)) * 1.08 || 1;
+
+    const xScale = x => padL + (x / (xMax || 1)) * w;
+    const yScale = y => padT + (1 - (y / yMax)) * h;
+
+    ctx.strokeStyle = "#bbb";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padL, padT);
+    ctx.lineTo(padL, padT + h);
+    ctx.lineTo(padL + w, padT + h);
+    ctx.stroke();
+
+    ctx.font = "12px system-ui, Arial";
+    ctx.fillStyle = "#666";
+
+    for (let i = 0; i <= 3; i++) {
+      const t = i / 3;
+      const yVal = (1 - t) * yMax;
+      const y = padT + t * h;
+      ctx.strokeStyle = "#eee";
+      ctx.beginPath();
+      ctx.moveTo(padL, y);
+      ctx.lineTo(padL + w, y);
+      ctx.stroke();
+      ctx.fillText(fmtAUD0.format(yVal), 8, y + 4);
+    }
+
+    const labelStep = xMax > 20 ? 10 : 5;
+    for (let x = 0; x <= xMax; x += labelStep) {
+      const xx = xScale(x);
+      ctx.fillText(String(x), xx - 4, padT + h + 26);
+    }
+
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--green");
+    ctx.beginPath();
+    ctx.moveTo(xScale(points[0].year), yScale(0));
+    for (let i = 0; i < points.length; i++) {
+      ctx.lineTo(xScale(points[i].year), yScale(points[i].balance));
+    }
+    ctx.lineTo(xScale(points[points.length - 1].year), yScale(0));
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.save();
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--black");
+    ctx.lineWidth = 2.8;
+    ctx.beginPath();
+    points.forEach((p, i) => {
+      const x = xScale(p.year);
+      const y = yScale(p.balance);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function renderTable(points) {
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+
+    points.forEach(p => {
+      const tr = document.createElement("tr");
+
+      const tdYear = document.createElement("td");
+      tdYear.textContent = String(p.year);
+
+      const tdContrib = document.createElement("td");
+      tdContrib.textContent = fmtAUD0.format(p.contributions);
+
+      const tdBalance = document.createElement("td");
+      tdBalance.textContent = fmtAUD0.format(p.balance);
+
+      const tdGrowth = document.createElement("td");
+      tdGrowth.textContent = fmtAUD0.format(p.growth);
+
+      tr.appendChild(tdYear);
+      tr.appendChild(tdContrib);
+      tr.appendChild(tdBalance);
+      tr.appendChild(tdGrowth);
+      tbody.appendChild(tr);
+    });
+  }
+
+  function render() {
+    const result = projectCompound(state);
+
+    document.getElementById("futureValue").textContent = fmtAUD0.format(result.endBalance);
+    document.getElementById("totalContributions").textContent = fmtAUD0.format(result.totalContributions);
+    document.getElementById("totalGrowth").textContent = fmtAUD0.format(result.totalGrowth);
+    document.getElementById("netReturn").textContent = `${result.netAnnualPct.toFixed(2)}%`;
+
+    drawChart(result.points);
+    renderTable(result.points);
+    saveState();
+  }
+
+  function attachMoneyInput(el, getValue, setValue) {
+    el.value = formatMoney(getValue());
+    el.addEventListener("input", () => {
+      const n = parseMoney(el.value);
+      if (Number.isFinite(n)) setValue(n);
+      render();
+    });
+    el.addEventListener("blur", () => {
+      const n = getValue();
+      if (Number.isFinite(n)) el.value = formatMoney(n);
+    });
+  }
+
+  const startAmountEl = document.getElementById("startAmount");
+  const monthlyContributionEl = document.getElementById("monthlyContribution");
+  const yearsEl = document.getElementById("years");
+  const annualReturnEl = document.getElementById("annualReturn");
+  const annualFeesEl = document.getElementById("annualFees");
+
+  attachMoneyInput(startAmountEl, () => state.startAmount, v => { state.startAmount = Math.max(0, v); });
+  attachMoneyInput(monthlyContributionEl, () => state.monthlyContribution, v => { state.monthlyContribution = Math.max(0, v); });
+
+  yearsEl.value = state.years;
+  annualReturnEl.value = state.annualReturn;
+  annualFeesEl.value = state.annualFees;
+
+  yearsEl.addEventListener("input", () => {
+    state.years = Math.max(1, Number(yearsEl.value) || 1);
+    render();
+  });
+
+  annualReturnEl.addEventListener("input", () => {
+    state.annualReturn = Math.max(0, Number(annualReturnEl.value) || 0);
+    render();
+  });
+
+  annualFeesEl.addEventListener("input", () => {
+    state.annualFees = Math.max(0, Number(annualFeesEl.value) || 0);
+    render();
+  });
+
+  window.addEventListener("resize", render);
+
+  render();
+</script>
+</body>
+</html>
