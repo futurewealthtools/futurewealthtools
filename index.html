@@ -43,7 +43,14 @@
   --shadow2: 0 1px 3px rgba(2,6,23,.08);
   --radius:16px;
 }
-       body { font-family: system-ui, Arial, sans-serif; margin: 0; padding: 20px; max-width: 1100px; color: var(--text); background: var(--bg); }
+      body {
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.35;
+}
     header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
     h1 { margin: 0; font-size: 26px; }
     .subtitle { margin: 6px 0 0; color:#444; }
@@ -172,6 +179,67 @@
     font-size:12px;
     margin-top:14px;
   }
+
+  .hero-layout{
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) 240px;
+    gap:16px;
+    align-items:start;
+    margin-top:16px;
+  }
+  .tool-nav{
+    position:sticky;
+    top:16px;
+  }
+  .tool-nav h2{
+    margin:0 0 10px;
+    font-size:16px;
+  }
+  .tool-nav p{
+    margin:0 0 12px;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .tool-links{
+    display:grid;
+    gap:8px;
+  }
+  .tool-link{
+    display:block;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    text-decoration:none;
+    color:var(--text);
+    background:var(--card);
+    font-weight:600;
+    box-shadow: var(--shadow2);
+    transition: transform .06s ease, box-shadow .2s ease;
+  }
+  .tool-link:hover{
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+  .tool-link small{
+    display:block;
+    margin-top:3px;
+    color:var(--muted);
+    font-weight:500;
+  }
+  .tool-link.coming-soon{
+    color:var(--muted);
+    background:var(--soft);
+  }
+
+  @media (max-width: 900px){
+    .hero-layout{
+      grid-template-columns:1fr;
+    }
+    .tool-nav{
+      position:static;
+      order:2;
+    }
+  }
   </style>
 </head>
 <body>
@@ -179,12 +247,6 @@
 <header>
   <div>
     <h1>Future Wealth Calculator</h1>
-    <div style="text-align: center; margin: 30px 0;">
-  <a href="compound-interest-calculator.html" 
-     style="display: inline-block; padding: 12px 20px; background-color: #2c7be5; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">
-    Try Our Compound Interest Calculator →
-  </a>
-</div>
     <div class="subtitle">Compare investing vs saving — see your future wealth.</div>
   </div>
   <div class="row">
@@ -197,30 +259,50 @@
   </div>
 </header>
 
-<section class="card" style="margin-top:16px;">
-  <h2>Future Wealth Calculator</h2>
-  <p>
-    This future wealth calculator helps you estimate how your savings and investments can grow over time.
-    Enter your current savings, monthly contributions, and expected return rates to project your total
-    future wealth and compare different financial scenarios.
-  </p>
+<div class="hero-layout">
+  <section class="card">
+    <h2>Future Wealth Calculator</h2>
+    <p>
+      This future wealth calculator helps you estimate how your savings and investments can grow over time.
+      Enter your current savings, monthly contributions, and expected return rates to project your total
+      future wealth and compare different financial scenarios.
+    </p>
 
-  <h3>What can you calculate?</h3>
-  <ul>
-    <li>Investment growth over time</li>
-    <li>Comparison of saving vs investing</li>
-    <li>Impact of inflation on your wealth</li>
-    <li>Opportunity cost of spending money today</li>
-    <li>Monthly budget surplus available for investing</li>
-  </ul>
+    <h3>What can you calculate?</h3>
+    <ul>
+      <li>Investment growth over time</li>
+      <li>Comparison of saving vs investing</li>
+      <li>Impact of inflation on your wealth</li>
+      <li>Opportunity cost of spending money today</li>
+      <li>Monthly budget surplus available for investing</li>
+    </ul>
 
-  <h3>Why this matters</h3>
-  <p>
-    Understanding how money grows is important for long-term financial planning. Small monthly investments
-    can compound into significant wealth over time. This tool helps you visualise that growth and make
-    better financial decisions.
-  </p>
-</section>
+    <h3>Why this matters</h3>
+    <p>
+      Understanding how money grows is important for long-term financial planning. Small monthly investments
+      can compound into significant wealth over time. This tool helps you visualise that growth and make
+      better financial decisions.
+    </p>
+  </section>
+
+  <aside class="card tool-nav" aria-label="Other calculators">
+    <h2>Other calculators</h2>
+    <p>Explore dedicated tools for specific topics.</p>
+    <nav class="tool-links">
+      <a class="tool-link" href="compound-interest-calculator.html">
+        Compound Interest
+        <small>Estimate compound growth</small>
+     <a class="tool-link" href="investment-calculator.html">
+  Investment Calculator
+  <small>Project portfolio growth</small>
+</a>
+      <span class="tool-link coming-soon">
+        Savings Calculator
+        <small>Coming soon</small>
+      </span>
+    </nav>
+  </aside>
+</div>
 <div class="tabs">
   <button class="tab" id="tabWealth">Future Wealth</button>
   <button class="tab" id="tabBudget">Monthly Budget</button>
