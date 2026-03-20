@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Savings Calculator – Estimate Your Savings Growth Over Time</title>
+<meta name="description" content="Free savings calculator to estimate how your savings grow over time with monthly contributions and interest."/>
+<link rel="canonical" href="https://futurewealthtools.com/savings-calculator.html"/>
+
+<style>
+body{margin:0;font-family:system-ui,Arial;background:#f6f7fb;color:#111;}
+.app{max-width:980px;margin:32px auto;padding:0 16px 40px;}
+h1{margin-bottom:6px;}
+.subtitle{color:#555;margin-bottom:20px;}
+
+.card{background:#fff;border-radius:12px;padding:16px;margin-top:16px;box-shadow:0 6px 16px rgba(0,0,0,0.06);}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+
+input{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;margin-top:6px;}
+
+.btn{margin-top:12px;padding:10px 14px;border-radius:8px;background:#2c7be5;color:#fff;border:none;cursor:pointer;}
+
+.kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px;}
+@media(max-width:700px){.kpis{grid-template-columns:1fr;}}
+
+.kpi{background:#fff;border-radius:12px;padding:14px;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+.kpi-title{font-size:12px;color:#666;}
+.kpi-value{font-size:18px;font-weight:bold;margin-top:4px;}
+
+canvas{width:100%;height:260px;margin-top:16px;border-radius:8px;border:1px solid #eee;}
+
+table{width:100%;margin-top:16px;border-collapse:collapse;font-size:13px;}
+td,th{padding:8px;border-bottom:1px solid #eee;text-align:left;}
+
+footer{text-align:center;margin-top:30px;font-size:12px;color:#777;}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<h1>Savings Calculator</h1>
+<p class="subtitle">Estimate how your savings grow over time with regular contributions and interest.</p>
+
+<div class="card">
+<div class="grid">
+<div>
+<label>Starting savings (AUD)</label>
+<input id="start" type="number" value="1000">
+</div>
+<div>
+<label>Monthly savings (AUD)</label>
+<input id="monthly" type="number" value="200">
+</div>
+<div>
+<label>Interest rate (% per year)</label>
+<input id="rate" type="number" value="3">
+</div>
+<div>
+<label>Years</label>
+<input id="years" type="number" value="20">
+</div>
+</div>
+
+<button class="btn" onclick="calc()">Calculate</button>
+
+<div class="kpis">
+<div class="kpi">
+<div class="kpi-title">Total savings</div>
+<div class="kpi-value" id="total">—</div>
+</div>
+<div class="kpi">
+<div class="kpi-title">Total contributed</div>
+<div class="kpi-value" id="contrib">—</div>
+</div>
+<div class="kpi">
+<div class="kpi-title">Interest earned</div>
+<div class="kpi-value" id="interest">—</div>
+</div>
+</div>
+
+<canvas id="chart"></canvas>
+
+<table id="table">
+<thead><tr><th>Year</th><th>Balance</th></tr></thead>
+<tbody></tbody>
+</table>
+
+</div>
+
+<footer>Educational estimate only — not financial advice.</footer>
+
+</div>
+
+<script>
+function calc(){
+let start=+document.getElementById("start").value;
+let monthly=+document.getElementById("monthly").value;
+let rate=+document.getElementById("rate").value/100;
+let years=+document.getElementById("years").value;
+
+let months=years*12;
+let r=Math.pow(1+rate,1/12)-1;
+
+let balance=start;
+let data=[];
+let contrib=start;
+
+for(let i=1;i<=months;i++){
+balance=balance*(1+r)+monthly;
+contrib+=monthly;
+if(i%12===0)data.push(balance);
+}
+
+document.getElementById("total").innerText="$"+Math.round(balance).toLocaleString();
+document.getElementById("contrib").innerText="$"+Math.round(contrib).toLocaleString();
+document.getElementById("interest").innerText="$"+Math.round(balance-contrib).toLocaleString();
+
+draw(data);
+table(data);
+}
+
+function draw(data){
+let c=document.getElementById("chart");
+let ctx=c.getContext("2d");
+c.width=c.clientWidth;
+c.height=c.clientHeight;
+ctx.clearRect(0,0,c.width,c.height);
+
+let max=Math.max(...data);
+let step=c.width/(data.length-1);
+
+ctx.beginPath();
+ctx.moveTo(0,c.height);
+
+data.forEach((v,i)=>{
+let x=i*step;
+let y=c.height-(v/max)*c.height;
+ctx.lineTo(x,y);
+});
+
+ctx.strokeStyle="#2c7be5";
+ctx.lineWidth=2;
+ctx.stroke();
+}
+
+function table(data){
+let tbody=document.querySelector("#table tbody");
+tbody.innerHTML="";
+data.forEach((v,i)=>{
+let row=`<tr><td>${i+1}</td><td>$${Math.round(v).toLocaleString()}</td></tr>`;
+tbody.innerHTML+=row;
+});
+}
+</script>
+
+</body>
+</html>
